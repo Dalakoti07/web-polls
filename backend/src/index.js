@@ -8,6 +8,7 @@ const bodyParser = require('body-parser')
 const app = express();
 const cors = require('cors')
 const usersRoute = require('./routes')
+const socketServer = require('./polls')
 
 app.use(bodyParser.urlencoded({extended: true}))
 app.use(express.static('public'));
@@ -19,18 +20,7 @@ app.get('/', (req, res) => {
 });
 
 const server = require('http').createServer(app);
-let io = require('socket.io')(server,{
-    cors: {
-        origin: '*',
-    }
-});
-
-io.on("connection",(socket)=>{
-    console.log("A client is connected")
-    socket.on("disconnect",(reason)=>{
-        console.log("User is disconnected", reason)
-    })
-})
+socketServer.startWebSocket(server)
 
 server.listen(3000, () => {
     console.log('Server running')

@@ -2,6 +2,7 @@ import './App.css';
 import io from 'socket.io-client';
 import {useEffect} from "react";
 import {useState} from "react";
+import Messages from "./components/Messages";
 
 function App() {
   const [socket, setSocket] = useState(null);
@@ -17,6 +18,7 @@ function App() {
       { socket ? (
           <div className="polls-container">
             <p>Socket is connected</p>
+            <Messages socket={socket}/>
           </div>
       ) : (
           <div>Not Connected</div>
