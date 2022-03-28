@@ -2,12 +2,11 @@
   "name": "web-poll-backend",
   "version": "1.0.0",
   "description": "a backend for web poll",
-  "main": "src/index.ts",
+  "main": "src/index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start:build": "tsc -w",
-    "start:run": "nodemon dist/index.js",
-    "dev": "concurrently npm:start:*"
+    "start": "node src/index.js",
+    "dev": "nodemon src/index.js"
   },
   "keywords": [
     "js"
@@ -15,12 +14,9 @@
   "author": "dalakoti07",
   "license": "ISC",
   "dependencies": {
+    "body-parser": "^1.19.2",
     "cors": "^2.8.5",
     "express": "^4.17.3",
     "socket.io": "^4.4.1"
-  },
-  "devDependencies": {
-    "@types/express": "^4.17.13",
-    "typescript": "^4.6.3"
   }
 }
