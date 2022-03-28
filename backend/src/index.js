@@ -7,10 +7,12 @@ const express = require('express');
 const bodyParser = require('body-parser')
 const app = express();
 const cors = require('cors')
+const usersRoute = require('./routes')
 
 app.use(bodyParser.urlencoded({extended: true}))
 app.use(express.static('public'));
 app.use(cors())
+app.use('/users',usersRoute)
 
 app.get('/', (req, res) => {
     res.send('Hello boy!')
