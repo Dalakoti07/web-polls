@@ -1,38 +1,68 @@
-class SocketServer {
+const express = require('express');
 
-    startWebSocket(server) {
-        this.io = require('socket.io')(server, {
-            cors: {
-                origin: '*',
-            }
-        });
+const router = express.Router();
+const UserModel = require('./schema/user')
 
-        this.io.on("connection", (socket) => {
-            console.log("A client is connected")
-            this.sendAQuestion(socket)
-            socket.on("disconnect", (reason) => {
-                console.log("User is disconnected", reason)
-            })
+// this is mongo database, we wont be using it though
+const database = require('./db');
+const dao = require('./dao');
+const Utils = require('./utils')
+
+router.post('/user', async (req, res)=>{
+    try{
+        let found = await dao.foundUserWithName(req.body.name)
+        console.log("user-found: ", found)
+        if(found){
+            throw "Name already Exist "
+        }
+        const user = dao.createUser()
+        res.send(
+            user
+        )
+    }catch (exception){
+        res.send({
+            error: exception
         })
     }
+})
 
-    sendAQuestion(socket, question, channel) {
-        socket.on("fetchQuestion", (data) => {
-            socket.emit("questions",
-                {
-                    "question": "Who is sachin?",
-                    "options": [
-                        "Chef",
-                        "Cricketer",
-                        "Athlete",
-                        "Singer"
-                    ]
-                }
-            )
+// create a poll, give question and options in body
+router.post('/create', async(req, res)=>{
+    try{
+        let isValid = Utils.validateDataForQuestions(req.body)
+        console.log("data-valid: ", isValid)
+        // find if user Name is correct
+        let userExists = await dao.foundUserWithId(req.body.by)
+        if(!userExists){
+            throw "User does not exist"
+        }
+        const question = await dao.createQuestion(req.body);
+        res.send(question)
+    }catch (exception){
+        res.send({
+            error: exception
         })
     }
+})
 
-}
+router.post('/vote',(req, res)=>{
+    try {
+        Utils.validateDataForVoting(req.body)
+        console.log("ip address is ...", req.ip)
+        let result = dao.castAVoteToPoll(req.body, req.ip)
+        res.send(result)
+    }catch (exception){
+        res.send({
+            error: exception
+        })
+    }
+})
 
-module.exports = new SocketServer()
+router.patch('/poll',(req, res)=>{
 
+
+    res.send('poll updated')
+})
+
+
+module.exports = router;
