@@ -27,7 +27,8 @@ const questionSchema = new mongoose.Schema({
             option: Number,
             // this will be IP address of the user
             voted_by: { type: String }
-        }]
+        }],
+        default: []
     }
 })
 

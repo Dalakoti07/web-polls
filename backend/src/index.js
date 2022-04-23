@@ -3,7 +3,6 @@
  */
 
 const express = require('express');
-
 const bodyParser = require('body-parser')
 const app = express();
 const cors = require('cors')
@@ -15,7 +14,7 @@ app.use(bodyParser.urlencoded({extended: true}))
 app.use(express.json())
 app.use(express.static('public'));
 app.use(cors())
-app.use('/users',usersRoute)
+app.use('/users', usersRoute)
 app.use('/polls', pollsRoute)
 
 app.get('/', (req, res) => {

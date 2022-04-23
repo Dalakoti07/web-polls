@@ -45,11 +45,22 @@ router.post('/create', async(req, res)=>{
     }
 })
 
-router.post('/vote',(req, res)=>{
+router.post('/vote',async(req, res)=>{
     try {
         Utils.validateDataForVoting(req.body)
         console.log("ip address is ...", req.ip)
-        let result = dao.castAVoteToPoll(req.body, req.ip)
+        let result = await dao.castAVoteToPoll(req.body, req.ip)
+        res.send(result)
+    }catch (exception){
+        res.send({
+            error: exception
+        })
+    }
+})
+
+router.get('/vote/result', async (req, res)=>{
+    try {
+        let result = await dao.getPollResultsForId(req.query.id);
         res.send(result)
     }catch (exception){
         res.send({
