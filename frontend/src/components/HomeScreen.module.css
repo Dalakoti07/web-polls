@@ -1,0 +1,57 @@
+.container{
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.conn_strip_green{
+    background: green;
+    color: white;
+    padding: 0.5rem;
+}
+
+.conn_strip_red{
+    background: red;
+    color: white;
+    padding: 0.5rem;
+}
+
+.input_field{
+    display: block;
+    width: 50%;
+    padding: 0.5rem;
+}
+
+.poll_div{
+    box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+    width: 50%;
+    padding: 2rem;
+    margin-top: 1rem;
+    /*display: flex;*/
+    /*flex-direction: column;*/
+}
+
+.option_div{
+    margin-top: 2rem;
+    display: flex;
+    width: 100%;
+}
+
+.pb{
+    flex-grow: 1;
+}
+
+.poll_option{
+
+}
+
+.poll_question{
+    font-size: larger;
+    color: #282c34;
+}
+
+.btn{
+    padding: 0.1rem 1rem 0.1rem 1rem;
+    margin-top: 1rem;
+}
