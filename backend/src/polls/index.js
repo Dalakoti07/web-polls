@@ -7,6 +7,7 @@ const UserModel = require('./schema/user')
 const database = require('./db');
 const dao = require('./dao');
 const Utils = require('./utils')
+const mySocket = require("./socket");
 
 router.post('/user', async (req, res)=>{
     try{
@@ -50,6 +51,9 @@ router.post('/vote',async(req, res)=>{
         Utils.validateDataForVoting(req.body)
         console.log("ip address is ...", req.ip)
         let result = await dao.castAVoteToPoll(req.body, req.ip)
+        // notify all users about it
+        let mySocket = require('./socket')
+        new mySocket().getInstance().broadcastVotingResults(req.body.questionId)
         res.send(result)
     }catch (exception){
         res.send({
@@ -73,6 +77,12 @@ router.patch('/poll',(req, res)=>{
 
 
     res.send('poll updated')
+})
+
+router.get('/play/sockets',async (req, res)=>{
+    let mySocket = require('./socket')
+    await new mySocket().getInstance().broadCastHelloToRoom(req.query.room)
+    res.send("200")
 })
 
 

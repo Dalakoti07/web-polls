@@ -16,6 +16,9 @@ export const HomeScreen = () => {
             console.log("response", data)
             setServerQuestionResponse(data)
         })
+        socket.on("hello",(data)=>{
+            console.log("hello from server....")
+        })
     }
 
     console.log("socket is", socket)
