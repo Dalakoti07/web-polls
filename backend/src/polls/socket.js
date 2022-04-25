@@ -35,7 +35,6 @@ class SocketServer {
         console.log("sending question to socket", socket.id)
         // send question details to user, including current votes status
         socket.on("fetchQuestion", async (questionId) => {
-            // this.joinRoomWithName(socket, questionId)
             await this.joinRoomWithName(socket, questionId)
             await this.broadCastHelloToRoom(questionId)
             // send question details to socket

@@ -2,11 +2,14 @@ import styles from './HomeScreen.module.css'
 import {useEffect, useState} from "react";
 import io from "socket.io-client";
 import ProgressBar from "@ramonak/react-progress-bar";
+import {Loading} from "./Loading";
+const axios = require('axios').default;
 
 export const HomeScreen = () => {
     const [socket, setSocket] = useState(null);
     const [questionId, setQuestionId] = useState("")
     const [serverQuestionResponse, setServerQuestionResponse] = useState({})
+    const [makingApiCall, setMakingApiCall] = useState(false)
 
     function fetchDataFromSocket(){
         if(socket == null)
@@ -21,6 +24,19 @@ export const HomeScreen = () => {
         })
     }
 
+    function castAVote(option){
+        try{
+            setMakingApiCall(true)
+            let result = axios.create({responseType: "json"}).post("http://localhost:3000/polls/vote", {
+                questionId: questionId,
+                option: option
+            })
+            setMakingApiCall(false)
+        }catch (e) {
+            setMakingApiCall(false)
+        }
+    }
+
     console.log("socket is", socket)
 
     useEffect(() => {
@@ -33,6 +49,7 @@ export const HomeScreen = () => {
 
     return (
         <div className={styles.container}>
+            {makingApiCall? <Loading/>: null}
             {socket ? (
                 <div>
                     {socket.connected ?
@@ -54,12 +71,21 @@ export const HomeScreen = () => {
                 Find
             </button>
             {serverQuestionResponse.hasOwnProperty('_id')? <div className={styles.poll_div}>
-                <p className={styles.poll_question}>{serverQuestionResponse.pollQuestion}</p>
+                <div className={styles.question_div}>
+                    <p className={styles.poll_question}>{serverQuestionResponse.pollQuestion}</p>
+                </div>
                 {serverQuestionResponse.options.map((value, idx)=>{
                     let percent = serverQuestionResponse.result[Number(idx)+1].percentage
                     return <div className={styles.option_div}>
                         <ProgressBar className={styles.pb} completed={Math.round(percent)} margin={10} bgColor={"#383838"} padding={4}/>
-                        <p key={value} className={styles.poll_option}>{value}</p>
+                        <div className={styles.flex_row}>
+                            <p key={value} className={styles.poll_option}>{value}</p>
+                            <p
+                                onClick={()=>{
+                                    castAVote(idx+1)
+                                }}
+                                className={styles.vote_btn}>Vote</p>
+                        </div>
                     </div>
                 })}
             </div>: null}
