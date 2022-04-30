@@ -3,43 +3,77 @@
     display: flex;
     flex-direction: column;
     align-items: center;
+    background: #F0A500;
+    min-height: 100vh;
+    padding-bottom: 5rem;
+}
+
+.hundred{
+    width: 100%;
 }
 
 .conn_strip_green{
-    background: green;
+    width: 100%;
+    background: #1B1A17;
     color: white;
     padding: 0.5rem;
 }
 
+.top_heading{
+    font-weight: bold;
+    color: #E45826;
+    font-size: xxx-large;
+    font-family: 'Tapestry', cursive;
+}
+
+.opening_para{
+    font-weight: bold;
+    color: #1B1A17;
+    font-size: x-large;
+    font-family: 'Tapestry', cursive;
+}
+
 .conn_strip_red{
-    background: red;
+    background: #E45826;
     color: white;
     padding: 0.5rem;
 }
 
 .input_field{
+    background: #E6D5B8;
     display: block;
     width: 50%;
-    padding: 0.5rem;
+    padding: 1rem;
+    outline: none;
+    border-radius: 5px;
 }
 
 .poll_div{
     box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
-    width: 50%;
-    padding: 2rem;
+    width: 60%;
+    padding: 2rem 5rem;
     margin-top: 1rem;
-    /*display: flex;*/
-    /*flex-direction: column;*/
+    background: #E6D5B8;
+    margin-bottom: 2rem;
+    border-radius: 5px;
+
+    /*here*/
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
 .option_div{
+    border-radius: 5px;
     margin-top: 2rem;
     display: flex;
     width: 90%;
     background: #FFF6EA;
     flex-direction: column;
     box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
-    padding-right: 4rem;
+    padding-right: 1rem;
+    padding-top: 1rem;
+    padding-left: 1rem;
 }
 
 .flex_row{
@@ -58,21 +92,25 @@
 }
 
 .question_div{
+    width: 100%;
     box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
     padding: 0.1rem;
     border-radius: 0.1rem;
+    background: #FFF6EA;
 }
 
 .poll_question{
     font-size: larger;
-    color: black;
+    color: #1B1A17;
+    border-radius: 5px;
+    font-weight: bold;
 }
 
 .vote_btn{
     border-radius: 10px;
     padding: 0.5rem 1rem;
-    color: white;
-    background: black;
+    color: #FFF6EA;
+    background: #1B1A17;
 }
 
 .vote_btn:hover{
@@ -80,6 +118,27 @@
 }
 
 .btn{
+    font-weight: bold;
     padding: 0.1rem 1rem 0.1rem 1rem;
     margin-top: 1rem;
+    background: #E45826;
+    color: #FFF6EA;
+}
+
+@media screen and (max-width: 600px) {
+    .input_field{
+        width: 90%;
+    }
+    .poll_div{
+        padding: 2rem 0;
+        width: 100%;
+        border-radius: 0;
+    }
+    .question_div{
+        width: 95%;
+    }
+    .option_div{
+        width: 95%;
+        flex: 1;
+    }
 }

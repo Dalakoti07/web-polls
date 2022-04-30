@@ -49,9 +49,8 @@ export const HomeScreen = () => {
 
     return (
         <div className={styles.container}>
-            {makingApiCall? <Loading/>: null}
             {socket ? (
-                <div>
+                <div className={styles.hundred}>
                     {socket.connected ?
                         <p className={styles.conn_strip_green}>Socket is connected</p> :
                         <p className={styles.conn_strip_red}>Socket is not connected</p>
@@ -60,7 +59,11 @@ export const HomeScreen = () => {
             ) : (
                 <div className={styles.conn_strip_red}>Connecting...</div>
             )}
-            <p>Polling App</p>
+            {makingApiCall? <Loading/>: null}
+            <h1 className={styles.top_heading}>Web Polls</h1>
+            <p className={styles.opening_para}>
+                Paste poll id, below and enjoy
+            </p>
             <input className={styles.input_field} value={questionId} onChange={(e)=>{
                 setQuestionId(e.target.value)
             }}/>
@@ -68,7 +71,7 @@ export const HomeScreen = () => {
                 // fetch data from socket
                 fetchDataFromSocket()
             }}>
-                Find
+                Search
             </button>
             {serverQuestionResponse.hasOwnProperty('_id')? <div className={styles.poll_div}>
                 <div className={styles.question_div}>
@@ -76,8 +79,8 @@ export const HomeScreen = () => {
                 </div>
                 {serverQuestionResponse.options.map((value, idx)=>{
                     let percent = serverQuestionResponse.result[Number(idx)+1].percentage
-                    return <div className={styles.option_div}>
-                        <ProgressBar className={styles.pb} completed={Math.round(percent)} margin={10} bgColor={"#383838"} padding={4}/>
+                    return <div className={styles.option_div} key={idx}>
+                        <ProgressBar className={styles.pb} completed={Math.round(percent)} margin={"10"} bgColor={"#383838"} padding={"4"}/>
                         <div className={styles.flex_row}>
                             <p key={value} className={styles.poll_option}>{value}</p>
                             <p
