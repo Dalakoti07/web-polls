@@ -3,6 +3,7 @@ import {useEffect, useState} from "react";
 import io from "socket.io-client";
 import ProgressBar from "@ramonak/react-progress-bar";
 import {Loading} from "./Loading";
+import webUrl from '../url_helper'
 const axios = require('axios').default;
 
 export const HomeScreen = () => {
@@ -27,7 +28,7 @@ export const HomeScreen = () => {
     function castAVote(option){
         try{
             setMakingApiCall(true)
-            let result = axios.create({responseType: "json"}).post("http://localhost:3000/polls/vote", {
+            let result = axios.create({responseType: "json"}).post(`${webUrl}/polls/vote`, {
                 questionId: questionId,
                 option: option
             })
@@ -40,7 +41,7 @@ export const HomeScreen = () => {
     console.log("socket is", socket)
 
     useEffect(() => {
-        const newSocket = io(`http://localhost:3000`);
+        const newSocket = io(`${webUrl}`);
         newSocket.on("connect", () => {
             setSocket(newSocket);
         })
@@ -49,6 +50,9 @@ export const HomeScreen = () => {
 
     return (
         <div className={styles.container}>
+            <div className={styles.ribbon}>
+                <a target={"_blank"} href="https://github.com/Dalakoti07/web-polls">Fork me on GitHub</a>
+            </div>
             {socket ? (
                 <div className={styles.hundred}>
                     {socket.connected ?
