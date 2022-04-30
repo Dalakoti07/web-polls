@@ -12,6 +12,15 @@ export const HomeScreen = () => {
     const [serverQuestionResponse, setServerQuestionResponse] = useState({})
     const [makingApiCall, setMakingApiCall] = useState(false)
 
+    useEffect(()=>{
+        // Parsing the query string using vanilla JS
+        const id = window.location.search.split("=")[1];
+        if(id!==undefined){
+            console.log('question id is ',id);
+            setQuestionId(id)
+        }
+    })
+
     function fetchDataFromSocket(){
         if(socket == null)
             return
