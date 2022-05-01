@@ -74,8 +74,6 @@ router.get('/vote/result', async (req, res)=>{
 })
 
 router.patch('/poll',(req, res)=>{
-
-
     res.send('poll updated')
 })
 
@@ -95,7 +93,17 @@ router.get('/all',async(req, res)=>{
 router.get('/play/sockets',async (req, res)=>{
     let mySocket = require('./socket')
     await new mySocket().getInstance().broadCastHelloToRoom(req.query.room)
-    res.send("200")
+})
+
+router.get('/voting/count_by_ip', async (req, res)=>{
+    try{
+        let result = await dao.votesOnQuestionByIp(req.query.ip, req.query.id)
+        res.send(result)
+    }catch (e) {
+        res.send({
+            error: e
+        })
+    }
 })
 
 

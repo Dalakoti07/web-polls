@@ -30,4 +30,5 @@ https://stackoverflow.com/questions/47291416/how-to-print-environment-variables-
 
 ### Todo bugs
 - [x] avoid extra callbacks on client side, it not good from performance point of view
-- [ ] add throttling of 5 req per minute from an ip
+- [x] allow person to vote for at max 3 times
+- [ ] setup CI-CD for netlify

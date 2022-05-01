@@ -1,5 +1,6 @@
 const UserModel = require('./schema/user')
 const QuestionModel = require('./schema/Question')
+const mongoose = require('mongoose');
 
 class Dao {
     async foundUserWithName(name) {
@@ -37,8 +38,14 @@ class Dao {
         return await QuestionModel.findById(questionId).lean().exec()
     }
 
-    //todo later make sure a person cannot vote more than one time
+    //todo make sure a person cannot vote more than 3 times
     async castAVoteToPoll({questionId, option}, ip) {
+        let votesByIp = await this.votesOnQuestionByIp(ip, questionId)
+        if(votesByIp.length>0){
+            if(votesByIp[0].count >=3)
+                throw "You have already voted 3 times"
+        }
+
         // validate the questionId
         let foundQuestion = await this.findQuestionWithId(questionId)
         if (foundQuestion == null) {
@@ -99,6 +106,35 @@ class Dao {
             postedBy: 1,
         })
         return allQuestions
+    }
+
+    /**
+     * got it from https://stackoverflow.com/q/62972482/10386258
+     */
+    async votesOnQuestionByIp(ipAddress, questionId){
+        let votesOnQuestion = await QuestionModel.aggregate([
+            { $match: { _id: mongoose.Types.ObjectId(questionId) } },
+            { $unwind: "$votes" },
+            {
+                $group: {
+                    _id: "$votes.voted_by",
+                    count: { $sum: 1 }
+                }
+            },
+            {
+                $project: {
+                    _id: 0,
+                    actionName: "$_id",
+                    count: 1
+                }
+            },{
+                $match:{
+                    actionName: ipAddress
+                }
+            }
+        ])
+        console.log("votes, ", votesOnQuestion)
+        return votesOnQuestion
     }
 
 }
