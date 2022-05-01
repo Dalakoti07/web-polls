@@ -34,10 +34,10 @@ export const HomeScreen = () => {
         })
     }
 
-    function castAVote(option){
+    async function castAVote(option){
         try{
             setMakingApiCall(true)
-            let result = axios.create({responseType: "json"}).post(`${webUrl}/polls/vote`, {
+            let result = await axios.create({responseType: "json"}).post(`${webUrl}polls/vote`, {
                 questionId: questionId,
                 option: option
             })
