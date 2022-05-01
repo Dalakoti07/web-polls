@@ -32,3 +32,4 @@ https://stackoverflow.com/questions/47291416/how-to-print-environment-variables-
 - [x] avoid extra callbacks on client side, it not good from performance point of view
 - [x] allow person to vote for at max 3 times
 - [ ] setup CI-CD for netlify
+- [ ] Fix toast bug
