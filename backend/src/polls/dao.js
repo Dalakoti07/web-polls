@@ -33,11 +33,6 @@ class Dao {
         return await questionModel.save()
     }
 
-    async findAllQuestion() {
-        // and populate user details
-
-    }
-
     async findQuestionWithId(questionId) {
         return await QuestionModel.findById(questionId).lean().exec()
     }
@@ -95,6 +90,15 @@ class Dao {
         delete foundQuestion.__v
         foundQuestion.result = pollDetails
         return foundQuestion
+    }
+
+    async getAllQuestion(){
+        let allQuestions = await QuestionModel.find({}, {
+            pollQuestion: 1,
+            options: 1,
+            postedBy: 1,
+        })
+        return allQuestions
     }
 
 }

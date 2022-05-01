@@ -79,6 +79,19 @@ router.patch('/poll',(req, res)=>{
     res.send('poll updated')
 })
 
+router.get('/all',async(req, res)=>{
+    try{
+        if(req.query.hash !== process.env.secret_hash)
+            throw "invalid secret token"
+        let result = await dao.getAllQuestion()
+        res.send(result)
+    }catch (e) {
+        res.send({
+            error: e
+        })
+    }
+})
+
 router.get('/play/sockets',async (req, res)=>{
     let mySocket = require('./socket')
     await new mySocket().getInstance().broadCastHelloToRoom(req.query.room)

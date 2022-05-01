@@ -1,3 +1,4 @@
+require('dotenv').config();
 class Utils{
 
     validateDataForQuestions(dto){
@@ -6,6 +7,8 @@ class Utils{
             options: array of string
             by: string,
         */
+        if(dto.hash !== process.env.secret_hash)
+            throw "invalid secret token"
         if(!dto.question)
             throw "Question cannot be empty"
         if(typeof dto.options === 'object' && dto.options.length <=4 && dto.options.length>0){
