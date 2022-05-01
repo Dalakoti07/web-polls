@@ -27,3 +27,7 @@ From (https://stackoverflow.com/a/54297672/10386258)
 ```
 https://stackoverflow.com/questions/47291416/how-to-print-environment-variables-on-heroku
 ```
+
+### Todo bugs
+- [x] avoid extra callbacks on client side, it not good from performance point of view
+- [ ] add throttling of 5 req per minute from an ip

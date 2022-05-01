@@ -25,12 +25,10 @@ export const HomeScreen = () => {
         if(socket == null)
             return
         socket.emit("fetchQuestion",questionId)
+        socket.off("questions")
         socket.on("questions", (data) => {
             console.log("response", data)
             setServerQuestionResponse(data)
-        })
-        socket.on("hello",(data)=>{
-            console.log("hello from server....")
         })
     }
 
@@ -91,9 +89,11 @@ export const HomeScreen = () => {
                     <p className={styles.poll_question}>{serverQuestionResponse.pollQuestion}</p>
                 </div>
                 {serverQuestionResponse.options.map((value, idx)=>{
-                    let percent = serverQuestionResponse.result[Number(idx)+1].percentage
+                    let percent = 0
+                    if(serverQuestionResponse.result[Number(idx)+1] !== undefined)
+                        percent = serverQuestionResponse.result[Number(idx)+1].percentage
                     return <div className={styles.option_div} key={idx}>
-                        <ProgressBar className={styles.pb} completed={Math.round(percent)} margin={"10"} bgColor={"#383838"} padding={"4"}/>
+                        <ProgressBar className={styles.pb} completed={Math.round(percent)} margin={"20"} bgColor={"#383838"} padding={"4"}/>
                         <div className={styles.flex_row}>
                             <p key={value} className={styles.poll_option}>{value}</p>
                             <p
