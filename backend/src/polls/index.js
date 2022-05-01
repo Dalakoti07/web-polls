@@ -56,7 +56,7 @@ router.post('/vote',async(req, res)=>{
         new mySocket().getInstance().broadcastVotingResults(req.body.questionId)
         res.send(result)
     }catch (exception){
-        res.send({
+        res.status(422).send({
             error: exception
         })
     }

@@ -4,13 +4,17 @@ import io from "socket.io-client";
 import ProgressBar from "@ramonak/react-progress-bar";
 import {Loading} from "./Loading";
 import webUrl from '../url_helper'
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
 const axios = require('axios').default;
 
 export const HomeScreen = () => {
     const [socket, setSocket] = useState(null);
     const [questionId, setQuestionId] = useState("")
     const [serverQuestionResponse, setServerQuestionResponse] = useState({})
-    const [makingApiCall, setMakingApiCall] = useState(false)
+    const [makingApiCall, setMakingApiCall] = useState({call_made: false, error: null})
+    const [isLoading, setIsLoading] = useState(false)
 
     useEffect(()=>{
         // Parsing the query string using vanilla JS
@@ -34,18 +38,34 @@ export const HomeScreen = () => {
 
     async function castAVote(option){
         try{
-            setMakingApiCall(true)
+            setIsLoading(true)
             let result = await axios.create({responseType: "json"}).post(`${webUrl}polls/vote`, {
                 questionId: questionId,
                 option: option
             })
-            setMakingApiCall(false)
+            setMakingApiCall({
+                call_made: true,
+                error: null
+            })
+            setIsLoading(false)
         }catch (e) {
-            setMakingApiCall(false)
+            console.log("api error, ",e)
+            setMakingApiCall({
+                call_made: true,
+                error: e.response.data.error
+            })
+            setIsLoading(false)
         }
     }
 
-    console.log("socket is", socket)
+    function createToast(){
+        console.log("create toast called ...")
+        toast.error(makingApiCall.error)
+        setMakingApiCall({
+            call_made: false,
+            error: null
+        })
+    }
 
     useEffect(() => {
         const newSocket = io(`${webUrl}`);
@@ -70,7 +90,7 @@ export const HomeScreen = () => {
             ) : (
                 <div className={styles.conn_strip_red}>Connecting...</div>
             )}
-            {makingApiCall? <Loading/>: null}
+            {isLoading? <Loading/>: null}
             <h1 className={styles.top_heading}>Web Polls</h1>
             <p className={styles.opening_para}>
                 Paste poll id, below and enjoy
@@ -105,6 +125,11 @@ export const HomeScreen = () => {
                     </div>
                 })}
             </div>: null}
+            {
+                //    if error only
+                ( !isLoading && makingApiCall.call_made && makingApiCall.error != null)? createToast() : null
+            }
+            <ToastContainer />
         </div>
     )
 }
