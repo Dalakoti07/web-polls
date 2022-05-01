@@ -25,7 +25,7 @@ const server = require('http').createServer(app);
 const ss = new socketServer().getInstance();
 ss.startWebSocket(server)
 
-server.listen(3000, () => {
+server.listen(process.env.PORT || 3000, () => {
     console.log('Server running')
 })
 
